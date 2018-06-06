@@ -1,0 +1,5 @@
+.picker {
+  height: 240px;
+  width: 240px;
+  background-image: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent);
+}
