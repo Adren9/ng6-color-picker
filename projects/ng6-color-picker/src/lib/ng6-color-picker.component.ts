@@ -2,12 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'adr-ng6-color-picker',
-  template: `
-    <p>
-      ng6-color-picker works!
-    </p>
-  `,
-  styles: []
+  templateUrl: './color-picker.component.html',
+  styleUrls: ['./color-picker.component.css']
 })
 export class Ng6ColorPickerComponent implements OnInit {
 
