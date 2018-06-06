@@ -116,6 +116,46 @@
           }
         }
       }
+    },
+    "ng6-color-picker": {
+      "root": "projects/ng6-color-picker",
+      "sourceRoot": "projects/ng6-color-picker/src",
+      "projectType": "library",
+      "prefix": "adr",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ng6-color-picker/tsconfig.lib.json",
+            "project": "projects/ng6-color-picker/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ng6-color-picker/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng6-color-picker/src/test.ts",
+            "tsConfig": "projects/ng6-color-picker/tsconfig.spec.json",
+            "karmaConfig": "projects/ng6-color-picker/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng6-color-picker/tsconfig.lib.json",
+              "projects/ng6-color-picker/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ng-color-picker"
