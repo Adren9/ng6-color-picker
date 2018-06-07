@@ -1,4 +1,5 @@
-import { Directive, Input, OnInit, ElementRef, Renderer2, HostListener } from '@angular/core';
+import { Directive, Input, OnInit, ElementRef, Renderer2, HostListener, Output, EventEmitter } from '@angular/core';
+
 
 @Directive({
   selector: '[adrPointer]'
@@ -13,6 +14,8 @@ export class PointerDirective implements OnInit {
 
   // Pointer position of y-axis
   @Input() y: number;
+
+  @Output() positionChange = new EventEmitter();
 
   private dragging: boolean;
 
@@ -93,5 +96,10 @@ export class PointerDirective implements OnInit {
 
     this.x = x;
     this.y = y;
+
+    this.positionChange.emit({
+      x: this.x,
+      y: this.y
+    });
   }
 }
