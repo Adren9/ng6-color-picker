@@ -1,4 +1,4 @@
-<div class="picker" #picker [ngStyle]="getPickerStyle()">
+<div class="picker" #picker [ngStyle]="pickerStyle">
   <div class="pointer" adrPointer [container]="picker" (positionChange)="onPointerPositionChange($event)"
-  [x]="getPointerX()" [y]="getPointerY()"></div>
+  [x]="pointerX" [y]="pointerY"></div>
 </div>
