@@ -15,6 +15,12 @@ export class PointerDirective implements OnInit, OnChanges {
   // Pointer position of y-axis
   @Input() y: number;
 
+  // Pointer can't move in x-axis if true
+  @Input() disableXAxis = false;
+
+  // Pointer can't move in y-axis if true
+  @Input() disableYAxis = false;
+
   @Output() positionChange = new EventEmitter();
 
   private dragging: boolean;
@@ -116,8 +122,12 @@ export class PointerDirective implements OnInit, OnChanges {
   }
 
   changePointerPosition() {
-    this.changePointerXPosition();
-    this.changePointerYPosition();
+    if (! this.disableXAxis) {
+      this.changePointerXPosition();
+    }
+    if (! this.disableYAxis) {
+      this.changePointerYPosition();
+    }
   }
 
   changePointerXPosition() {
