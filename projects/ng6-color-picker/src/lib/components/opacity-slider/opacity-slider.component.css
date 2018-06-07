@@ -1,0 +1,28 @@
+.slider {
+  height: 25px;
+  width: 160px;
+}
+.pointer {
+  height: 100%;
+  width: 12px;
+}
+.pointer::before, .pointer::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+}
+.pointer::before {
+  border-top: 8px solid #ff0000;
+  border-bottom: 8px solid transparent;
+  top: -8px;
+}
+.pointer::after {
+  border-bottom: 8px solid #ff0000;
+  border-top: 8px solid transparent;
+  bottom: -8px;
+}
