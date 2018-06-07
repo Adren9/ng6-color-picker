@@ -9,9 +9,9 @@ import { ColorConverterService } from '../../services/color-converter.service';
 })
 export class SvPickerComponent implements OnInit {
 
-  @Input() hue: number = 360;
-  @Input() saturation: number = 100;
-  @Input() value: number = 30;
+  @Input() hue: number;
+  @Input() saturation: number;
+  @Input() value: number;
 
   @Output('saturationChange') saturationChange = new EventEmitter<number>();
   @Output('valueChange') valueChange = new EventEmitter<number>();
@@ -35,8 +35,6 @@ export class SvPickerComponent implements OnInit {
       this.value = value;
       this.valueChange.emit(value);
     }
-
-    console.log(saturation, value);
   }
 
   getPickerStyle() {
