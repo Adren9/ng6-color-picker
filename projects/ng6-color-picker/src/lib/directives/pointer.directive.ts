@@ -28,7 +28,7 @@ export class PointerDirective implements OnInit {
 
     this.renderer.setStyle(this.container, 'position', 'relative');
     this.renderer.setStyle(this.pointer.nativeElement, 'position', 'absolute');
-    this.renderer.listen(this.container, 'mousedown', this.onContainerMouseDown);
+    this.renderer.listen(this.container, 'mousedown', this.onContainerMouseDown.bind(this));
 
   }
 
