@@ -34,11 +34,16 @@ export class PointerDirective implements OnInit, OnChanges {
 
     this.renderer.setStyle(this.container, 'position', 'relative');
     this.renderer.setStyle(this.pointer.nativeElement, 'position', 'absolute');
-    this.renderer.listen(this.container, 'mousedown', this.onContainerMouseDown.bind(this));
+    // prevent scrolling, refreshing page
+    this.renderer.setStyle(this.container, 'touch-action', 'none');
+    // set pointer undraggable
     this.renderer.setAttribute(this.pointer.nativeElement, 'draggable', 'false');
     this.renderer.setStyle(this.pointer.nativeElement, 'touch-action', 'none');
     this.renderer.setStyle(this.pointer.nativeElement, 'user-select', 'none');
     this.renderer.setStyle(this.pointer.nativeElement, 'user-drag', 'none');
+
+    this.renderer.listen(this.container, 'mousedown', this.onContainerMouseDown.bind(this));
+    this.renderer.listen(this.container, 'touchstart', this.onTouchStart.bind(this));
   }
 
   ngOnChanges() {
@@ -52,8 +57,18 @@ export class PointerDirective implements OnInit, OnChanges {
     this.dragStart();
   }
 
+  onTouchStart(e: TouchEvent) {
+    this.getTouchCoordinates(e);
+    this.changePointerPosition();
+    this.dragStart();
+  }
+
   @HostListener('document:mouseup')
   onDocumentMouseUp() {
+    this.dragStop();
+  }
+  @HostListener('document:touchend')
+  onDocumentTouchEnd() {
     this.dragStop();
   }
 
@@ -61,7 +76,17 @@ export class PointerDirective implements OnInit, OnChanges {
   onDocumentMouseMove(e: MouseEvent) {
     // If mouse button is down
     if (this.dragging) {
-      this.onPointerDrag(e);
+      this.getMouseCoordinates(e);
+      this.changePointerPosition();
+    }
+  }
+
+  @HostListener('document:touchmove', ['$event'])
+  onDocumentTouchMove(e: TouchEvent) {
+    // If touched on container
+    if (this.dragging) {
+      this.getTouchCoordinates(e);
+      this.changePointerPosition();
     }
   }
 
@@ -73,29 +98,37 @@ export class PointerDirective implements OnInit, OnChanges {
     this.dragging = false;
   }
 
-  onPointerDrag(e: MouseEvent) {
-    this.getMouseCoordinates(e);
-    this.changePointerPosition();
+  getMouseCoordinates(e: MouseEvent) {
+    // Distances from page start
+    const mouseX = e.pageX;
+    const mouseY = e.pageY;
+
+    this.getCoordinates(mouseX, mouseY);
   }
 
-  // Calculates x and y values from event properties and container properties
-  getMouseCoordinates(e: MouseEvent) {
-
+  getTouchCoordinates(e: TouchEvent) {
     // Distances from page start
-    const mouseLeft = e.pageX;
-    const mouseTop = e.pageY;
-    const containerLeft = this.container.offsetLeft;
-    const containerTop = this.container.offsetTop;
+    const touchX = e.touches[0].pageX;
+    const touchY = e.touches[0].pageY;
+
+    this.getCoordinates(touchX, touchY);
+  }
+
+  // Calculates distance in relation to container
+  // x and y parameters should be distance from page start
+  getCoordinates(x, y) {
+
+    const containerX = this.container.offsetLeft;
+    const containerY = this.container.offsetTop;
 
     const containerWidth = parseInt(window.getComputedStyle(this.container).width, 10);
     const containerHeight = parseInt(window.getComputedStyle(this.container).height, 10);
 
-    // Mouse positions against container
-    let x = mouseLeft - containerLeft;
-    let y = mouseTop - containerTop;
+     x = x - containerX;
+     y = y - containerY;
 
-    // Invert y to be real value of y-axis
-    y = containerHeight - y;
+     // Invert y to be real value of y axis
+     y = containerHeight - y;
 
     // values can't be outside of the container
     if (x < 0) {
@@ -124,7 +157,6 @@ export class PointerDirective implements OnInit, OnChanges {
       }
     });
   }
-
   changePointerPosition() {
     if (! this.disableXAxis) {
       this.changePointerXPosition();
