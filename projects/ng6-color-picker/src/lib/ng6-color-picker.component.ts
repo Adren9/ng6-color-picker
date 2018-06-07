@@ -12,6 +12,7 @@ export class Ng6ColorPickerComponent implements OnInit {
 
   rgb: RGB;
   hsv: HSV = { h: 360, s: 100, v: 100 };
+  opacity = 1;
 
   constructor(private converter: ColorConverterService) {
     this.updateRgb();

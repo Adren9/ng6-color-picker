@@ -4,5 +4,5 @@
     (valueChange)="hsv.v = $event; onHsvChange()">
   </adr-sv-picker>
   <adr-hue-slider [hue]="hsv.h" (change)="hsv.h = $event; onHsvChange()"></adr-hue-slider>
-  <adr-opacity-slider></adr-opacity-slider>
+  <adr-opacity-slider [hue]="hsv.h" [opacity]="opacity" (change)="opacity = $event"></adr-opacity-slider>
 </div>
