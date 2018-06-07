@@ -1,10 +1,10 @@
-import { Directive, Input, OnInit, ElementRef, Renderer2, HostListener, Output, EventEmitter } from '@angular/core';
+import { Directive, Input, OnInit, ElementRef, Renderer2, HostListener, Output, EventEmitter, OnChanges } from '@angular/core';
 
 
 @Directive({
   selector: '[adrPointer]'
 })
-export class PointerDirective implements OnInit {
+export class PointerDirective implements OnInit, OnChanges {
 
   // Element against which pointer position is calculated
   @Input('container') container;
@@ -29,11 +29,16 @@ export class PointerDirective implements OnInit {
     this.renderer.setStyle(this.container, 'position', 'relative');
     this.renderer.setStyle(this.pointer.nativeElement, 'position', 'absolute');
     this.renderer.listen(this.container, 'mousedown', this.onContainerMouseDown.bind(this));
+  }
 
+  ngOnChanges() {
+    // On input changes
+    this.changePointerPosition();
   }
 
   onContainerMouseDown(e: MouseEvent) {
     this.getMouseCoordinates(e);
+    this.changePointerPosition();
     this.dragStart();
   }
 
@@ -60,6 +65,7 @@ export class PointerDirective implements OnInit {
 
   onPointerDrag(e: MouseEvent) {
     this.getMouseCoordinates(e);
+    this.changePointerPosition();
   }
 
   // Calculates x and y values from event properties and container properties
@@ -101,5 +107,36 @@ export class PointerDirective implements OnInit {
       x: this.x,
       y: this.y
     });
+  }
+
+  changePointerPosition() {
+    this.changePointerXPosition();
+    this.changePointerYPosition();
+  }
+
+  changePointerXPosition() {
+    const containerWidth = parseInt(window.getComputedStyle(this.container).width, 10);
+    const pointerWidth = parseInt(window.getComputedStyle(this.pointer.nativeElement).width, 10);
+
+    // centered (mouse cursor is in the middle of pointer)
+    let pointerLeft = this.x - pointerWidth / 2;
+
+    // percentage value
+    pointerLeft = (pointerLeft / containerWidth) * 100;
+
+    this.renderer.setStyle(this.pointer.nativeElement, 'left', pointerLeft + '%');
+  }
+
+  changePointerYPosition() {
+    const containerHeight = parseInt(window.getComputedStyle(this.container).height, 10);
+    const pointerHeight = parseInt(window.getComputedStyle(this.pointer.nativeElement).height, 10);
+
+    // centered (mouse cursor is in the middle of pointer)
+    let pointerBottom = this.y - pointerHeight / 2;
+
+    // percentage value
+    pointerBottom = (pointerBottom / containerHeight) * 100;
+
+    this.renderer.setStyle(this.pointer.nativeElement, 'bottom', pointerBottom + '%');
   }
 }
