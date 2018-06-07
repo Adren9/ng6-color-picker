@@ -36,6 +36,9 @@ export class PointerDirective implements OnInit, OnChanges {
     this.renderer.setStyle(this.pointer.nativeElement, 'position', 'absolute');
     this.renderer.listen(this.container, 'mousedown', this.onContainerMouseDown.bind(this));
     this.renderer.setAttribute(this.pointer.nativeElement, 'draggable', 'false');
+    this.renderer.setStyle(this.pointer.nativeElement, 'touch-action', 'none');
+    this.renderer.setStyle(this.pointer.nativeElement, 'user-select', 'none');
+    this.renderer.setStyle(this.pointer.nativeElement, 'user-drag', 'none');
   }
 
   ngOnChanges() {
