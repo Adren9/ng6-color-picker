@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { ColorConverterService } from '../../services/color-converter.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class SvPickerComponent implements OnInit {
   @Output('saturationChange') saturationChange = new EventEmitter<number>();
   @Output('valueChange') valueChange = new EventEmitter<number>();
 
-  constructor() { }
+  constructor(private converter: ColorConverterService) { }
 
   ngOnInit() {
   }
@@ -34,5 +35,17 @@ export class SvPickerComponent implements OnInit {
     }
 
     console.log(saturation, value);
+  }
+
+  getPickerStyle() {
+    const bgColor = this.converter.hsvToRgb({
+      h: this.hue,
+      s: 100,
+      v: 100,
+    }, true);
+
+    return {
+      backgroundColor: '#' + bgColor
+    };
   }
 }

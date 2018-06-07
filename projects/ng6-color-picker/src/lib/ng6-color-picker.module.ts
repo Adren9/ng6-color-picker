@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Ng6ColorPickerComponent } from './ng6-color-picker.component';
 import { SvPickerComponent } from './components/sv-picker/sv-picker.component';
 import { HueSliderComponent } from './components/hue-slider/hue-slider.component';
@@ -8,6 +9,7 @@ import { ColorConverterService } from './services/color-converter.service';
 
 @NgModule({
   imports: [
+    CommonModule
   ],
   providers: [
     ColorConverterService
