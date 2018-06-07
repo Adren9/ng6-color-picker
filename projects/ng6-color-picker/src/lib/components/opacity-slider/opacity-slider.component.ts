@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { sliderBackground } from './sliderBackground';
 
 @Component({
   selector: 'adr-opacity-slider',
