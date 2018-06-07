@@ -104,8 +104,14 @@ export class PointerDirective implements OnInit, OnChanges {
     this.y = y;
 
     this.positionChange.emit({
-      x: this.x,
-      y: this.y
+      x: {
+        px: this.x,
+        percentage: Math.round(x / containerWidth * 100)
+      }
+      y: {
+        px: this.y,
+        percentage: Math.round(y / containerHeight * 100)
+      }
     });
   }
 
