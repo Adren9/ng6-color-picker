@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 import { ColorConverterService } from '../../services/color-converter.service';
 
 @Component({
@@ -12,13 +12,17 @@ export class HueSliderComponent implements OnInit, OnChanges {
 
   @Output('change') change = new EventEmitter<number>();
 
+  @ViewChild('slider') slider;
+
   pointerStyle;
+  pointerX: number;
 
   constructor(private converter: ColorConverterService) {
     this.getPointerStyle();
   }
 
   ngOnInit() {
+    this.getPointerX();
   }
 
   ngOnChanges(changes) {
@@ -29,6 +33,7 @@ export class HueSliderComponent implements OnInit, OnChanges {
 
   onHueChange() {
     this.getPointerStyle();
+    this.getPointerX();
   }
 
   onPointerPositionChange(position) {
@@ -48,5 +53,10 @@ export class HueSliderComponent implements OnInit, OnChanges {
     this.pointerStyle = {
       backgroundColor: '#' + bgColor
     };
+  }
+
+  getPointerX() {
+    const sliderWidth = parseInt(window.getComputedStyle(this.slider.nativeElement).width, 10);
+    this.pointerX = this.hue / 360 * sliderWidth;
   }
 }
