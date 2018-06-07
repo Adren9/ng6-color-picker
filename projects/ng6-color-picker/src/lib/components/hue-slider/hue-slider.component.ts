@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'adr-hue-slider',
@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HueSliderComponent implements OnInit {
 
+  @Input() hue: number;
+
+  @Output('change') change = new EventEmitter<number>();
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  onPointerPositionChange(position) {
+    const x = position.x.percentage;
+    this.hue = Math.round(x / 100 * 360);
+    this.change.emit(this.hue);
+  }
 }

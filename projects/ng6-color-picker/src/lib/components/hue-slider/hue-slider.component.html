@@ -1,3 +1,4 @@
 <div class="slider" #slider>
-  <div class="pointer" adrPointer [></div>
+  <div class="pointer" adrPointer [disableYAxis]="true" [container]="slider"
+    (positionChange)="onPointerPositionChange($event)"></div>
 </div>
