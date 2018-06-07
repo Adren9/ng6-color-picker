@@ -3,6 +3,6 @@
     (saturationChange)="hsv.s = $event; onHsvChange()"
     (valueChange)="hsv.v = $event; onHsvChange()">
   </adr-sv-picker>
-  <adr-hue-slider></adr-hue-slider>
+  <adr-hue-slider [hue]="hsv.h" (change)="hsv.h = $event; onHsvChange()"></adr-hue-slider>
   <adr-opacity-slider></adr-opacity-slider>
 </div>
