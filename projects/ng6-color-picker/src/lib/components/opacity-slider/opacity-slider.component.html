@@ -1,6 +1,7 @@
 <div class="slider" #slider>
   <div class="opacity-gradient" [style.backgroundImage]="sliderBackgroundGradient">
     <div class="pointer" adrPointer [disableYAxis]="true" [container]="slider"
-    (positionChange)="onPointerPositionChange($event)"></div>
+    (positionChange)="onPointerPositionChange($event)"
+    [x]="pointerX"></div>
   </div>
 </div>
