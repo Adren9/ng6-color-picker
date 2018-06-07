@@ -1,5 +1,8 @@
 <div class="wrapper">
-  <adr-sv-picker></adr-sv-picker>
+  <adr-sv-picker [hue]="hsv.h" [saturation]="hsv.s" [value]="hsv.v"
+    (saturationChange)="hsv.s = $event; onHsvChange()"
+    (valueChange)="hsv.v = $event; onHsvChange()">
+  </adr-sv-picker>
   <adr-hue-slider></adr-hue-slider>
   <adr-opacity-slider></adr-opacity-slider>
 </div>
