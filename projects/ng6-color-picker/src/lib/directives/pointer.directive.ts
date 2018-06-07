@@ -107,7 +107,7 @@ export class PointerDirective implements OnInit, OnChanges {
       x: {
         px: this.x,
         percentage: Math.round(x / containerWidth * 100)
-      }
+      },
       y: {
         px: this.y,
         percentage: Math.round(y / containerHeight * 100)
