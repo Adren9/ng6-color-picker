@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ColorConverterService } from '../../services/color-converter.service';
 
 
@@ -9,12 +9,14 @@ import { ColorConverterService } from '../../services/color-converter.service';
 })
 export class SvPickerComponent implements OnInit {
 
-  @Input() hue: number;
-  @Input() saturation: number;
-  @Input() value: number;
+  @Input() hue: number = 360;
+  @Input() saturation: number = 100;
+  @Input() value: number = 30;
 
   @Output('saturationChange') saturationChange = new EventEmitter<number>();
   @Output('valueChange') valueChange = new EventEmitter<number>();
+
+  @ViewChild('picker') picker;
 
   constructor(private converter: ColorConverterService) { }
 
@@ -47,5 +49,17 @@ export class SvPickerComponent implements OnInit {
     return {
       backgroundColor: '#' + bgColor
     };
+  }
+
+  getPointerX() {
+    const pickerWidth = parseInt(window.getComputedStyle(this.picker.nativeElement).width, 10);
+    // Get x position in pixels for current saturation
+    return this.saturation / 100 * pickerWidth;
+  }
+
+  getPointerY() {
+    const pickerHeight = parseInt(window.getComputedStyle(this.picker.nativeElement).height, 10);
+    // Get y position in pixels for current value
+    return this.value / 100 * pickerHeight;
   }
 }
