@@ -16,7 +16,7 @@ export class Ng6ColorPickerComponent implements OnInit, DoCheck {
 
   @Input() opacity = 1;
 
-  @Input() color: RGB | HSV | string;
+  @Input() color: RGB | HSV | string = { h: 360, s: 100, v: 100};
 
   @Output('change') change = new EventEmitter();
 
@@ -25,9 +25,6 @@ export class Ng6ColorPickerComponent implements OnInit, DoCheck {
   constructor(private converter: ColorConverterService, private differs: KeyValueDiffers) { }
 
   ngOnInit() {
-    if (!this.color) {
-      this.color = { h: 360, s: 100, v: 100};
-    }
     this.colorDiffer = this.differs.find(this.color).create();
   }
 
