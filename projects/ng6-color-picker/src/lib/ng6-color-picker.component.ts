@@ -70,7 +70,6 @@ export class Ng6ColorPickerComponent implements OnInit {
   }
 
   onColorChange() {
-    console.log(this.hex);
     this.change.emit({
       rgb: this.rgb,
       hsv: this.hsv,

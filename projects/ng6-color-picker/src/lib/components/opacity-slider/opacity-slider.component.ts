@@ -55,7 +55,7 @@ export class OpacitySliderComponent implements OnInit, OnChanges {
   }
 
   getSliderBackgroundGradient() {
-    const gradientColor = '#' + this.converter.hsvToRgb({
+    const gradientColor = this.converter.hsvToRgb({
       h: this.hue,
       s: 100,
       v: 100

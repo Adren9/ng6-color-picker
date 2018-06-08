@@ -110,13 +110,13 @@ export class ColorConverterService {
     g = g.length === 1 ? '0' + g : g;
     b = b.length === 1 ? '0' + b : b;
 
-    return r + g + b;
+    return '#' + r + g + b;
   }
 
   hexToRgb(hex: string) {
-    const r16 = hex.slice(0, 2);
-    const g16 = hex.slice(2, 4);
-    const b16 = hex.slice(4, 6);
+    const r16 = hex.slice(1, 3);
+    const g16 = hex.slice(3, 5);
+    const b16 = hex.slice(5, 7);
 
     return {
       r: parseInt(r16, 16),

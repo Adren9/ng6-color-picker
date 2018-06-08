@@ -61,7 +61,7 @@ export class SvPickerComponent implements OnInit, OnChanges {
     }, true);
 
     this.pickerStyle = {
-      backgroundColor: '#' + bgColor
+      backgroundColor: bgColor
     };
   }
 

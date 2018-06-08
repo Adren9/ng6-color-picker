@@ -51,7 +51,7 @@ export class HueSliderComponent implements OnInit, OnChanges {
     }, true);
 
     this.pointerStyle = {
-      backgroundColor: '#' + bgColor
+      backgroundColor: bgColor
     };
   }
 
