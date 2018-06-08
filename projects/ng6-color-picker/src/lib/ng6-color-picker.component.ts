@@ -13,7 +13,8 @@ export class Ng6ColorPickerComponent implements OnInit, DoCheck {
   rgb: RGB;
   hsv: HSV;
   hex: string;
-  opacity = 1;
+
+  @Input() opacity = 1;
 
   @Input() color: RGB | HSV | string;
 
