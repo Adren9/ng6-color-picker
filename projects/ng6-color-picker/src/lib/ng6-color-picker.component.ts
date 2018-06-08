@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, KeyValueDiffers, DoCheck } from '@angular/core';
 import { RGB } from './models/rgb';
 import { HSV } from './models/hsv';
 import { ColorConverterService } from './services/color-converter.service';
@@ -8,7 +8,7 @@ import { ColorConverterService } from './services/color-converter.service';
   templateUrl: './ng6-color-picker.component.html',
   styleUrls: ['./ng6-color-picker.component.css']
 })
-export class Ng6ColorPickerComponent implements OnInit {
+export class Ng6ColorPickerComponent implements OnInit, DoCheck {
 
   rgb: RGB;
   hsv: HSV;
@@ -19,12 +19,28 @@ export class Ng6ColorPickerComponent implements OnInit {
 
   @Output('change') change = new EventEmitter();
 
-  constructor(private converter: ColorConverterService) { }
+  private colorDiffer;
+
+  constructor(private converter: ColorConverterService, private differs: KeyValueDiffers) { }
 
   ngOnInit() {
-    if (! this.getInputColor()) {
+    if (!this.color) {
+      this.color = { h: 360, s: 100, v: 100};
+    }
+    this.colorDiffer = this.differs.find(this.color).create();
+  }
+
+  onColorInputChange() {
+    if (!this.getInputColor()) {
       this.hsv = { h: 360, s: 100, v: 100 };
       this.onHsvChange();
+    }
+  }
+
+  ngDoCheck() {
+    const colorChanges = this.colorDiffer.diff(this.color);
+    if (colorChanges) {
+      this.onColorInputChange();
     }
   }
 
