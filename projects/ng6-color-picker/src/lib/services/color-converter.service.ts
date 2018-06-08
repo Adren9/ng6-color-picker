@@ -112,4 +112,17 @@ export class ColorConverterService {
 
     return r + g + b;
   }
+
+  hexToRgb(hex: string) {
+    const r16 = hex.slice(0, 2);
+    const g16 = hex.slice(2, 4);
+    const b16 = hex.slice(4, 6);
+
+    return {
+      r: parseInt(r16, 16),
+      g: parseInt(g16, 16),
+      b: parseInt(b16, 16)
+    };
+
+  }
 }

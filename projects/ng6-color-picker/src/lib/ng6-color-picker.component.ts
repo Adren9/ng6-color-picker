@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { RGB } from 'ng6-color-picker/lib/models/rgb';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { RGB } from './models/rgb';
 import { HSV } from './models/hsv';
 import { ColorConverterService } from './services/color-converter.service';
 
@@ -11,22 +11,71 @@ import { ColorConverterService } from './services/color-converter.service';
 export class Ng6ColorPickerComponent implements OnInit {
 
   rgb: RGB;
-  hsv: HSV = { h: 360, s: 100, v: 100 };
+  hsv: HSV;
+  hex: string;
   opacity = 1;
 
-  constructor(private converter: ColorConverterService) {
-    this.updateRgb();
-  }
+  @Input() color: RGB | HSV | string;
+
+  @Output('change') change = new EventEmitter();
+
+  constructor(private converter: ColorConverterService) { }
 
   ngOnInit() {
+    if (! this.getInputColor()) {
+      this.hsv = { h: 360, s: 100, v: 100 };
+      this.onHsvChange();
+    }
   }
 
-  private updateRgb() {
-    this.rgb = <RGB>this.converter.hsvToRgb(this.hsv);
+  getInputColor() {
+    if (! this.color) {
+      return false;
+    }
+    if (typeof this.color === 'string') {
+      this.hex = this.color;
+      this.onHexChange();
+      return true;
+    }
+    if (Object.keys(this.color).toString() === ['r', 'g', 'b'].toString()) {
+      this.rgb = this.color as RGB;
+      this.onRgbChange();
+      return true;
+    }
+    if (Object.keys(this.color).toString() === ['h', 's', 'v'].toString()) {
+      this.hsv = this.color as HSV;
+      this.onHsvChange();
+      return true;
+    }
+
+    return false;
   }
 
   onHsvChange() {
-    this.updateRgb();
+    this.rgb = this.converter.hsvToRgb(this.hsv) as RGB;
+    this.hex = this.converter.rgbToHex(this.rgb);
+    this.onColorChange();
   }
 
+  onRgbChange() {
+    this.hex = this.converter.rgbToHex(this.rgb);
+    this.hsv = this.converter.rgbToHsv(this.rgb);
+    this.onColorChange();
+  }
+
+  onHexChange() {
+    this.rgb = this.converter.hexToRgb(this.hex);
+    this.hsv = this.converter.rgbToHsv(this.rgb);
+    this.onColorChange();
+  }
+
+  onColorChange() {
+    console.log(this.hex);
+    this.change.emit({
+      rgb: this.rgb,
+      hsv: this.hsv,
+      hex: this.hex,
+      opacity: this.opacity
+    });
+  }
 }
