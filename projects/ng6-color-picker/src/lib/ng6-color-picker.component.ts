@@ -52,12 +52,12 @@ export class Ng6ColorPickerComponent implements OnInit, DoCheck {
       return true;
     }
     if (Object.keys(this.color).toString() === ['r', 'g', 'b'].toString()) {
-      this.rgb = this.color as RGB;
+      this.rgb = JSON.parse(JSON.stringify(this.color)) as RGB;
       this.onRgbChange();
       return true;
     }
     if (Object.keys(this.color).toString() === ['h', 's', 'v'].toString()) {
-      this.hsv = this.color as HSV;
+      this.hsv = JSON.parse(JSON.stringify(this.color)) as HSV;
       this.onHsvChange();
       return true;
     }
