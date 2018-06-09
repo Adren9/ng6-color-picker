@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build_lib": "ng build ng6-color-picker",
+    "build_lib_prod": "ng build --prod ng6-color-picker && cp ./README.md ./dist/ng6-color-picker"
   },
   "private": true,
   "dependencies": {
