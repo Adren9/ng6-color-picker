@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, KeyValueDiffers, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, KeyValueDiffers, DoCheck, KeyValueDiffer, OnChanges } from '@angular/core';
 import { RGB } from './models/rgb';
 import { HSV } from './models/hsv';
 import { ColorConverterService } from './services/color-converter.service';
@@ -8,86 +8,58 @@ import { ColorConverterService } from './services/color-converter.service';
   templateUrl: './ng6-color-picker.component.html',
   styleUrls: ['./ng6-color-picker.component.css']
 })
-export class Ng6ColorPickerComponent implements OnInit, DoCheck {
+export class Ng6ColorPickerComponent implements OnInit, OnChanges {
 
-  rgb: RGB;
   hsv: HSV;
-  hex: string;
 
   @Input() opacity = 1;
 
-  @Input() color: RGB | HSV | string = { h: 360, s: 100, v: 100};
+  @Input() color = '#ff0000';
 
   @Output('change') change = new EventEmitter();
 
-  private colorDiffer;
-
-  constructor(private converter: ColorConverterService, private differs: KeyValueDiffers) { }
+  constructor(private converter: ColorConverterService) { }
 
   ngOnInit() {
-    this.colorDiffer = this.differs.find(this.color).create();
+    this.getHsvFromColorInput();
   }
 
-  onColorInputChange() {
-    if (!this.getInputColor()) {
-      this.hsv = { h: 360, s: 100, v: 100 };
-      this.onHsvChange();
+  ngOnChanges(changes) {
+    if (changes['color']) {
+      this.getHsvFromColorInput();
     }
   }
 
-  ngDoCheck() {
-    const colorChanges = this.colorDiffer.diff(this.color);
-    if (colorChanges) {
-      this.onColorInputChange();
-    }
+  getHsvFromColorInput() {
+    const rgb = this.converter.hexToRgb(this.color);
+    this.hsv = this.converter.rgbToHsv(rgb);
   }
 
-  getInputColor() {
-    if (! this.color) {
-      return false;
-    }
-    if (typeof this.color === 'string') {
-      this.hex = this.color;
-      this.onHexChange();
-      return true;
-    }
-    if (Object.keys(this.color).toString() === ['r', 'g', 'b'].toString()) {
-      this.rgb = JSON.parse(JSON.stringify(this.color)) as RGB;
-      this.onRgbChange();
-      return true;
-    }
-    if (Object.keys(this.color).toString() === ['h', 's', 'v'].toString()) {
-      this.hsv = JSON.parse(JSON.stringify(this.color)) as HSV;
-      this.onHsvChange();
-      return true;
-    }
-
-    return false;
+  onHueChange(hue) {
+    this.hsv.h = hue;
+    this.emitChange();
   }
 
-  onHsvChange() {
-    this.rgb = this.converter.hsvToRgb(this.hsv) as RGB;
-    this.hex = this.converter.rgbToHex(this.rgb);
-    this.onColorChange();
+  onSaturationChange(saturataion) {
+    this.hsv.s = saturataion;
+    this.emitChange();
   }
 
-  onRgbChange() {
-    this.hex = this.converter.rgbToHex(this.rgb);
-    this.hsv = this.converter.rgbToHsv(this.rgb);
-    this.onColorChange();
+  onValueChange(value) {
+    this.hsv.v = value;
+    this.emitChange();
   }
 
-  onHexChange() {
-    this.rgb = this.converter.hexToRgb(this.hex);
-    this.hsv = this.converter.rgbToHsv(this.rgb);
-    this.onColorChange();
+  onOpacityChange(opacity) {
+    this.opacity = opacity;
+    this.emitChange();
   }
 
-  onColorChange() {
+  emitChange() {
     this.change.emit({
-      rgb: this.rgb,
+      rgb: this.converter.hsvToRgb(this.hsv),
       hsv: this.hsv,
-      hex: this.hex,
+      hex: this.converter.hsvToRgb(this.hsv, true),
       opacity: this.opacity
     });
   }
