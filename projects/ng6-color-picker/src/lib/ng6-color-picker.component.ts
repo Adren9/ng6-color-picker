@@ -25,8 +25,12 @@ export class Ng6ColorPickerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes) {
-    if (changes['color']) {
-      this.getHsvFromColorInput();
+    if (changes['color'] && this.hsv) {
+     // hexadecimal color value may have different hsv color values (prevent pointer from getting away)
+     const currentHex = this.converter.hsvToRgb(this.hsv, true);
+      if (this.color !== currentHex) {
+        this.getHsvFromColorInput();
+      }
     }
   }
 
