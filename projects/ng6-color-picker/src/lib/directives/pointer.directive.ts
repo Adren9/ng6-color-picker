@@ -99,17 +99,17 @@ export class PointerDirective implements OnInit, OnChanges {
   }
 
   getMouseCoordinates(e: MouseEvent) {
-    // Distances from page start
-    const mouseX = e.pageX;
-    const mouseY = e.pageY;
+    // Distances from window start
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
 
     this.getCoordinates(mouseX, mouseY);
   }
 
   getTouchCoordinates(e: TouchEvent) {
-    // Distances from page start
-    const touchX = e.touches[0].pageX;
-    const touchY = e.touches[0].pageY;
+    // Distances from window start
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
 
     this.getCoordinates(touchX, touchY);
   }
@@ -118,14 +118,16 @@ export class PointerDirective implements OnInit, OnChanges {
   // x and y parameters should be distance from page start
   getCoordinates(x, y) {
 
-    const containerX = this.container.offsetLeft;
-    const containerY = this.container.offsetTop;
+    const boundingClientRect = this.container.getBoundingClientRect();
+
+    const containerTop = boundingClientRect.top;
+    const containerLeft = boundingClientRect.left;
 
     const containerWidth = parseInt(window.getComputedStyle(this.container).width, 10);
     const containerHeight = parseInt(window.getComputedStyle(this.container).height, 10);
 
-     x = x - containerX;
-     y = y - containerY;
+     x = x - containerLeft;
+     y = y - containerTop;
 
      // Invert y to be real value of y axis
      y = containerHeight - y;
