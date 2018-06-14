@@ -4,5 +4,5 @@
     (valueChange)="onValueChange($event)">
   </adr-sv-picker>
   <adr-hue-slider [hue]="hsv.h" (change)="onHueChange($event)"></adr-hue-slider>
-  <adr-opacity-slider [hue]="hsv.h" [opacity]="opacity" (change)="onOpacityChange($event)"></adr-opacity-slider>
+  <adr-opacity-slider *ngIf="enableOpacity" [hue]="hsv.h" [opacity]="opacity" (change)="onOpacityChange($event)"></adr-opacity-slider>
 </div>

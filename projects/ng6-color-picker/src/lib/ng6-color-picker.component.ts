@@ -16,6 +16,8 @@ export class Ng6ColorPickerComponent implements OnInit, OnChanges {
 
   @Input() color = '#ff0000';
 
+  @Input() enableOpacity = true;
+
   @Output('change') change = new EventEmitter();
 
   constructor(private converter: ColorConverterService) { }
@@ -60,11 +62,16 @@ export class Ng6ColorPickerComponent implements OnInit, OnChanges {
   }
 
   emitChange() {
-    this.change.emit({
+    const event = {
       rgb: this.converter.hsvToRgb(this.hsv),
       hsv: this.hsv,
-      hex: this.converter.hsvToRgb(this.hsv, true),
-      opacity: this.opacity
-    });
+      hex: this.converter.hsvToRgb(this.hsv, true)
+    };
+
+    if (this.enableOpacity) {
+      event['opacity'] = this.opacity;
+    }
+
+    this.change.emit(event);
   }
 }
