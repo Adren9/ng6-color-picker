@@ -62,14 +62,24 @@ export class Ng6ColorPickerComponent implements OnInit, OnChanges {
   }
 
   emitChange() {
+    const rgb = this.converter.hsvToRgb(this.hsv) as RGB;
+    const hex = this.converter.rgbToHex(rgb);
+    const opacity = this.opacity;
+
     const event = {
-      rgb: this.converter.hsvToRgb(this.hsv),
+      rgb: rgb,
       hsv: this.hsv,
-      hex: this.converter.hsvToRgb(this.hsv, true)
+      hex: hex,
+      getCssRGB: () => {
+        return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+      }
     };
 
     if (this.enableOpacity) {
-      event['opacity'] = this.opacity;
+      event['opacity'] = opacity;
+      event['getCssRGBA'] = () => {
+        return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
+      };
     }
 
     this.change.emit(event);
