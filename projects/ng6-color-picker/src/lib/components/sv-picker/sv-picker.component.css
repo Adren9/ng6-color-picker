@@ -1,6 +1,6 @@
 .picker {
-  height: 240px;
-  width: 240px;
+  height: 216px;
+  width: 216px;
   background-image: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent);
 }
 .pointer {

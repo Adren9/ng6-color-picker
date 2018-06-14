@@ -1,14 +1,14 @@
 .slider {
   height: 10px;
-  width: 240px;
-  margin: 12px 0;
+  width: 216px;
+  margin: 12px 0 0 0;
   border-radius: 4px;
   background-image: linear-gradient(to right, #FF0000, #FFFF00, #00FF00, #00FFFF, #0000FF, #FF00FF,#FF0000)
 }
 .pointer {
-  height: 24px;
-  width: 24px;
-  top: -7px;
+  height: 18px;
+  width: 18px;
+  top: -4px;
   border: 2px solid #fff;
   box-sizing: border-box;
   border-radius: 50%;
