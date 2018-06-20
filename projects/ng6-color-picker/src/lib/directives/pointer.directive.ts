@@ -54,13 +54,13 @@ export class PointerDirective implements OnInit, OnChanges {
   onContainerMouseDown(e: MouseEvent) {
     this.getMouseCoordinates(e);
     this.changePointerPosition();
-    this.dragStart();
+    this.dragStart(e);
   }
 
   onTouchStart(e: TouchEvent) {
     this.getTouchCoordinates(e);
     this.changePointerPosition();
-    this.dragStart();
+    this.dragStart(e);
   }
 
   @HostListener('document:mouseup')
@@ -90,7 +90,8 @@ export class PointerDirective implements OnInit, OnChanges {
     }
   }
 
-  dragStart() {
+  dragStart(e) {
+    e.preventDefault();
     this.dragging = true;
   }
 
